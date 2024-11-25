@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-camera',
@@ -10,6 +11,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 export class CameraComponent implements OnInit {
   @ViewChild('video', { static: false }) video!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
+
+  http = inject(HttpClient);
+  message: string = "";
 
   videoWidth = 0;
   videoHeight = 0;
@@ -43,6 +47,7 @@ export class CameraComponent implements OnInit {
 
     // Convert the canvas image to a JPEG Blob
     canvasElement.toBlob((blob:any) => {
+      console.log(blob)
       if (blob) {
         this.sendImage(blob);
       }
@@ -51,21 +56,16 @@ export class CameraComponent implements OnInit {
 
   sendImage(blob: Blob): void {
     const formData = new FormData();
-    formData.append('image', blob, 'capture.jpg');
+    formData.append('image', blob, 'attendance.jpg');
 
-    console.log(formData);
+    this.http.post("http://localhost:3000/images/", formData).subscribe((res) => {
+      console.log(res)
+      if(res){
+        this.message = "User Found"
+      }else{
+        this.message = "User Not Found"
+      }
+    })
 
-    // Make HTTP POST request
-    // fetch('https://your-api-endpoint.com/upload', {
-    //   method: 'POST',
-    //   body: formData,
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     console.log('Image uploaded successfully:', result);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error uploading image:', error);
-    //   });
   }
 }
