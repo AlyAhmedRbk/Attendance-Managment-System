@@ -47,7 +47,6 @@ export class CameraComponent implements OnInit {
 
     // Convert the canvas image to a JPEG Blob
     canvasElement.toBlob((blob:any) => {
-      console.log(blob)
       if (blob) {
         this.sendImage(blob);
       }
@@ -65,7 +64,7 @@ export class CameraComponent implements OnInit {
       }else{
         this.message = "User Not Found"
       }
-    })
+    });
 
   }
 }
