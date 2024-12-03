@@ -1,11 +1,10 @@
-<div>
-  <div class="camera-container">
-    <h1>Attendance Managment System</h1>
+<div class="camera-container">
 
-    <video #video autoplay playsinline></video>
-    <button (click)="captureImage()">Capture Image</button>
-    <canvas #canvas hidden></canvas>
+  <div class="container">
+    <video #video autoplay muted></video>
+    <canvas #canvas></canvas> <!-- Overlay for face detection -->
   </div>
 
-  <p>{{ message }}</p>
+  <!-- This will display the message only when a face is detected -->
+  <p *ngIf="faceDetected" style="color: green;"></p>
 </div>
